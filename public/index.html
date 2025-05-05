@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Tên</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      position: relative;
+    }
+
+    .social-links {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .social-link {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .social-link:hover {
+      transform: translateX(-5px);
+    }
+
+    .social-link.facebook:hover {
+      color: #1877f2;
+    }
+
+    .social-link.github:hover {
+      color: #333;
+    }
+
+    .social-link.zalo:hover {
+      color: #0068ff;
+    }
+
+    .social-text {
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .social-link:hover .social-text {
+      opacity: 1;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .description {
+      color: #2c3e50;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+    }
+
+    .button-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .random-button {
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .random-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    .random-button:active {
+      transform: translateY(0);
+    }
+
+    .female-button {
+      background: #e84393;
+    }
+
+    .female-button:hover {
+      background: #d63384;
+    }
+
+    .male-button {
+      background: #3498db;
+    }
+
+    .male-button:hover {
+      background: #2980b9;
+    }
+
+    #result {
+      margin-top: 2rem;
+      font-size: 2.2rem;
+      color: #2c3e50;
+      text-align: center;
+      min-height: 3.5rem;
+      padding: 1.5rem 2rem;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: break-word;
+    }
+
+    .probability-section {
+      margin-top: 3rem;
+      width: 100%;
+      max-width: 800px;
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .probability-section h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+    }
+
+    .probability-input {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .name-input {
+      flex: 1;
+      padding: 12px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .name-input:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .analyze-button {
+      background: #2ecc71;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .analyze-button:hover {
+      background: #27ae60;
+      transform: translateY(-2px);
+    }
+
+    .analyze-button:active {
+      transform: translateY(0);
+    }
+
+    .probability-result {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      color: #2c3e50;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .probability-result.show {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .description {
+        font-size: 1rem;
+      }
+      
+      .button-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .random-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+      
+      #result {
+        font-size: 1.8rem;
+        padding: 1.2rem 1.5rem;
+        min-height: 3rem;
+      }
+
+      .social-links {
+        top: 10px;
+        right: 10px;
+        padding: 0.8rem;
+      }
+
+      .social-link {
+        font-size: 1.5rem;
+      }
+
+      .social-text {
+        display: none;
+      }
+
+      .probability-section {
+        padding: 1.5rem;
+      }
+
+      .probability-input {
+        flex-direction: column;
+      }
+
+      .name-input {
+        width: 100%;
+      }
+
+      .analyze-button {
+        width: 100%;
+      }
+    }
+
+    .result-container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .result-header {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .result-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-item .label {
+      color: #666;
+      font-weight: 500;
+    }
+
+    .result-item .value {
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .result-item.highlight {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+    }
+
+    .result-item.highlight .value {
+      color: #e74c3c;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      padding: 15px;
+      background: #fdf3f2;
+      border-radius: 5px;
+      text-align: left;
+    }
+
+    .error-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .error-details {
+      margin-top: 5px;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="social-links">
+    <a href="https://www.facebook.com/tamidanopro" target="_blank" class="social-link facebook">
+      <i class="fab fa-facebook"></i>
+      <span class="social-text">Facebook</span>
+    </a>
+    <a href="https://github.com/dangminhtai/" target="_blank" class="social-link github">
+      <i class="fab fa-github"></i>
+      <span class="social-text">GitHub</span>
+    </a>
+    <a href="https://zalo.me/0333078554" target="_blank" class="social-link zalo">
+      <i class="fab fa-whatsapp"></i>
+      <span class="social-text">Zalo</span>
+    </a>
+  </div>
+
+  <h1>Random tên by Đặng Minh Tài</h1>
+  <p class="description">Trang web hỗ trợ tạo hơn 100000 tên khác nhau với theo tỉ lệ chuẩn từ dữ liệu SG01</p>
+  <div class="button-container">
+    <button id="femaleButton" class="random-button female-button">Tạo tên nữ ngẫu nhiên</button>
+    <button id="maleButton" class="random-button male-button">Tạo tên nam ngẫu nhiên</button>
+    <button id="female4Button" class="random-button female-button">Tạo tên nữ ngẫu nhiên với 4 từ</button>
+    <button id="male4Button" class="random-button male-button">Tạo tên nam ngẫu nhiên với 4 từ</button>
+  </div>
+  <p id="result" style="display: flex; align-items: center; justify-content: center; gap: 10px;"></p>
+  <div id="randomNameActions" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 1.5rem;"></div>
+
+  <div class="probability-section">
+    <h2>Phân tích xác suất tên</h2>
+    <div class="probability-input">
+      <input type="text" id="nameInput" placeholder="Nhập tên đầy đủ cần phân tích" class="name-input">
+      <button id="analyzeButton" class="analyze-button">Xem dữ liệu về tên</button>
+    </div>
+    <div id="probabilityResult" class="probability-result"></div>
+  </div>
+
+  <script>
+    function toTitleCase(str) {
+      return str.replace(/([\p{L}]+)/gu, (word) =>
+        word.charAt(0).toLocaleUpperCase('vi-VN') + word.slice(1).toLocaleLowerCase('vi-VN')
+      );
+    }
+
+    async function generateName(endpoint) {
+      const button = document.getElementById(endpoint === '/random-female-name' ? 'femaleButton' : 
+                                        endpoint === '/random-male-name' ? 'maleButton' :
+                                        endpoint === '/random-female-name-4parts' ? 'female4Button' : 'male4Button');
+      const result = document.getElementById('result');
+      const actions = document.getElementById('randomNameActions');
+      
+      // Disable button and show loading state
+      button.disabled = true;
+      button.style.opacity = '0.7';
+      result.style.opacity = '0.5';
+      actions.innerHTML = '';
+      
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        const name = data.name || 'Không có kết quả';
+        result.innerText = name;
+        // Thêm nút copy và phân tích
+        if (data.name) {
+          actions.innerHTML = `
+            <button id="copyNameBtn" title="Sao chép tên" style="padding: 6px 14px; border-radius: 6px; border: none; background: #f1c40f; color: #2c3e50; font-weight: 600; cursor: pointer;">📋 Sao chép</button>
+            <button id="analyzeRandomBtn" title="Phân tích tên này" style="padding: 6px 14px; border-radius: 6px; border: none; background: #2ecc71; color: white; font-weight: 600; cursor: pointer;">🔎 Phân tích</button>
+          `;
+          document.getElementById('copyNameBtn').onclick = () => {
+            navigator.clipboard.writeText(name);
+            document.getElementById('copyNameBtn').innerText = '✅ Đã sao chép';
+            setTimeout(() => {
+              document.getElementById('copyNameBtn').innerText = '📋 Sao chép';
+            }, 1200);
+          };
+          document.getElementById('analyzeRandomBtn').onclick = () => {
+            document.getElementById('nameInput').value = name;
+            analyzeName();
+          };
+        }
+      } catch (error) {
+        result.innerText = 'Có lỗi xảy ra';
+        actions.innerHTML = '';
+      }
+      
+      // Re-enable button and restore opacity
+      button.disabled = false;
+      button.style.opacity = '1';
+      result.style.opacity = '1';
+    }
+
+    document.getElementById('femaleButton').addEventListener('click', () => generateName('/random-female-name'));
+    document.getElementById('maleButton').addEventListener('click', () => generateName('/random-male-name'));
+    document.getElementById('female4Button').addEventListener('click', () => generateName('/random-female-name-4parts'));
+    document.getElementById('male4Button').addEventListener('click', () => generateName('/random-male-name-4parts'));
+
+    async function analyzeName() {
+      const nameInput = document.getElementById('nameInput');
+      const analyzeButton = document.getElementById('analyzeButton');
+      const resultDiv = document.getElementById('probabilityResult');
+      
+      if (!nameInput.value.trim()) {
+        alert('Vui lòng nhập tên cần phân tích');
+        return;
+      }
+
+      // Disable button and show loading state
+      analyzeButton.disabled = true;
+      analyzeButton.style.opacity = '0.7';
+      resultDiv.innerHTML = 'Đang phân tích...';
+      resultDiv.classList.add('show');
+      
+      try {
+        const res = await fetch(`/api/name-probability?fullName=${encodeURIComponent(nameInput.value.trim())}`);
+        const data = await res.json();
+        
+        if (data.error) {
+          resultDiv.innerHTML = `
+            <div class="error-message">
+              <div class="error-title">Lỗi:</div>
+              <div class="error-details">${data.error}</div>
+              ${data.details ? `<div class="error-details">Chi tiết: ${data.details}</div>` : ''}
+            </div>`;
+        } else {
+          const result = Array.isArray(data) ? data[0] : data;
+
+          // TH1: Không hỗ trợ số lượng từ
+          if (result.Message && result.Message.includes('Không hỗ trợ tính xác suất')) {
+            resultDiv.innerHTML = `
+              <div class="error-message">
+                <div class="error-title">Thông báo:</div>
+                <div class="error-details">Hệ thống không hỗ trợ tính xác xuất với tên như này</div>
+              </div>`;
+          }
+          // TH2: Tổng xác suất = 0
+          else if (result.TotalProbability == 0) {
+            resultDiv.innerHTML = `
+              <div class="error-message">
+                <div class="error-title">Thông báo:</div>
+                <div class="error-details">Chưa có dữ liệu về tên này</div>
+              </div>`;
+          }
+          // TH3: Có dữ liệu
+          else {
+            const isUnknown = result.PredictedGender === 'Không xác định';
+            const genderColor = isUnknown ? '#e74c3c' : '#2c3e50';
+            const genderBg = isUnknown ? '#fdeaea' : '#eafaf1';
+            const genderText = result.PredictedGender || '';
+
+            // Phân loại độ phổ biến
+            let popularity = '';
+            let popColor = '';
+            let popBg = '';
+            const count = result.EstimatedCount || 0;
+            if (count >= 1 && count <= 5) {
+              popularity = 'Cực hiếm';
+              popColor = '#8e44ad';
+              popBg = '#f5e6fa';
+            } else if (count >= 6 && count <= 60) {
+              popularity = 'Hiếm';
+              popColor = '#2980b9';
+              popBg = '#eaf3fa';
+            } else if (count >= 61 && count <= 150) {
+              popularity = 'Ít phổ biến';
+              popColor = '#f39c12';
+              popBg = '#fdf6e3';
+            } else if (count >= 151 && count <= 300) {
+              popularity = 'Gần phổ biến';
+              popColor = '#16a085';
+              popBg = '#e6faf7';
+            } else if (count >= 301) {
+              popularity = 'Phổ biến';
+              popColor = '#27ae60';
+              popBg = '#eafaf1';
+            } else {
+              popularity = 'Không xác định';
+              popColor = '#7f8c8d';
+              popBg = '#f4f4f4';
+            }
+
+            resultDiv.innerHTML = `
+              <div class="result-container">
+                <div class="result-header">Kết quả phân tích tên</div>
+                <div class="result-content">
+                  <div class="result-item">
+                    <span class="label">Tên đầy đủ:</span>
+                    <span class="value">${toTitleCase(result.FullName)}</span>
+                  </div>
+                  <div class="result-item">
+                    <span class="label">Tỉ lệ là Nam:</span>
+                    <span class="value">${result.MaleProbability}</span>
+                  </div>
+                  <div class="result-item">
+                    <span class="label">Tỉ lệ là Nữ:</span>
+                    <span class="value">${result.FemaleProbability}</span>
+                  </div>
+                  <div class="result-item highlight">
+                    <span class="label">Dự đoán giới tính:</span>
+                    <span class="value" style="color: ${genderColor} !important; font-weight:bold; padding:2px 8px; border-radius:6px; background:${genderBg}; display:inline-block; min-width:110px; text-align:center;">${genderText}</span>
+                  </div>
+                  <div class="result-item">
+                    <span class="label">Tổng tỉ lệ:</span>
+                    <span class="value">${result.TotalProbability}</span>
+                  </div>
+                  <div class="result-item">
+                    <span class="label">Ước tính số người:</span>
+                    <span class="value">${count ? count.toLocaleString() : 0} người</span>
+                  </div>
+                  <div class="result-item">
+                    <span class="label">Độ phổ biến:</span>
+                    <span class="value" style="color:${popColor}; background:${popBg}; font-weight:bold; padding:2px 8px; border-radius:6px; display:inline-block; min-width:110px; text-align:center;">${popularity}</span>
+                  </div>
+                </div>
+              </div>`;
+          }
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <div class="error-message">
+            <div class="error-title">Lỗi kết nối:</div>
+            <div class="error-details">${error.message || 'Không thể kết nối đến server'}</div>
+          </div>`;
+      }
+      
+      // Re-enable button and restore opacity
+      analyzeButton.disabled = false;
+      analyzeButton.style.opacity = '1';
+    }
+
+    document.getElementById('analyzeButton').addEventListener('click', analyzeName);
+    document.getElementById('nameInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        analyzeName();
+      }
+    });
+  </script>
+</body>
+</html>
